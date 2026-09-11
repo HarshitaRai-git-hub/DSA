@@ -1,24 +1,36 @@
 class Solution {
 public:
     int totalNumbers(vector<int>& digits) {
-        unordered_map<int, int> cnt;
-        for (int d : digits) cnt[d]++;
-        set<int> st;
-        for (int h = 1; h <= 9; ++h) {
-            for (int t = 0; t <= 9; ++t) {
-                for (int u = 0; u <= 8; u += 2) {
-                    cnt[h]--;
-                    cnt[t]--;
-                    cnt[u]--;
-                    if (cnt[h] >= 0 && cnt[t] >= 0 && cnt[u] >= 0) {
-                        st.insert(h * 100 + t * 10 + u);
-                    }
-                    cnt[h]++;
-                    cnt[t]++;
-                    cnt[u]++;
+        int cnt[10] = {};
+
+        for (int d : digits)
+            cnt[d]++;
+
+        int res = 0;
+
+        for (int a = 1; a <= 9; a++) {
+            if (cnt[a] == 0)
+                continue;
+
+            cnt[a]--;
+
+            for (int b = 0; b <= 9; b++) {
+                if (cnt[b] == 0)
+                    continue;
+
+                cnt[b]--;
+
+                for (int c = 0; c <= 8; c += 2) {
+                    if (cnt[c] > 0)
+                        res++;
                 }
+
+                cnt[b]++;
             }
+
+            cnt[a]++;
         }
-        return st.size();
+
+        return res;
     }
 };
